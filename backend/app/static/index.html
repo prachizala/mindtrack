@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MindTrack - Privacy-First Mental Wellness</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body { background-color: #0f172a; color: #f8fafc; font-family: system-ui, -apple-system, sans-serif; }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+  <!-- MANDATORY NON-MEDICAL DISCLAIMER TOP BANNER -->
+  <aside class="bg-amber-500/10 border-b border-amber-500/20 px-6 py-2.5 text-center text-xs text-amber-300 flex items-center justify-center space-x-2">
+    <i class="fa-solid fa-triangle-exclamation"></i>
+    <span><b>Notice:</b> MindTrack is a self-reflection wellness tool, not medical advice or healthcare. If in crisis, call Tele-MANAS (14416) or 988.</span>
+    <button onclick="openHelplines()" class="underline font-semibold ml-2 hover:text-amber-200">View Helplines</button>
+  </aside>
+
+  <!-- Header -->
+  <header class="bg-slate-900 border-b border-slate-800 px-6 py-4 flex items-center justify-between">
+    <div class="flex items-center space-x-3">
+      <div class="w-10 h-10 rounded-xl bg-emerald-600 flex items-center justify-center text-white text-xl font-bold shadow-lg shadow-emerald-500/20">
+        <i class="fa-solid fa-leaf"></i>
+      </div>
+      <div>
+        <h1 class="font-bold text-lg leading-tight tracking-tight">MindTrack</h1>
+        <p class="text-xs text-slate-400">Privacy-First Mental Wellness Journal</p>
+      </div>
+    </div>
+    <div class="flex items-center space-x-4">
+      <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+        <i class="fa-solid fa-lock mr-1.5"></i> AES-256 Encrypted
+      </span>
+      <button onclick="openHelplines()" class="text-xs bg-rose-500/10 hover:bg-rose-500/20 text-rose-300 px-3 py-1.5 rounded-lg border border-rose-500/30 transition">
+        <i class="fa-solid fa-phone-volume mr-1"></i> Emergency Help
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="flex-1 max-w-7xl w-full mx-auto p-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
+    <!-- Left Column: Daily Check-in Form (6 Cols) -->
+    <div class="lg:col-span-6 space-y-6">
+      <div class="bg-slate-900/80 rounded-2xl border border-slate-800 p-6 shadow-xl space-y-5">
+        <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+          <h2 class="text-sm font-semibold uppercase tracking-wider text-slate-300">Daily Reflection</h2>
+          <span class="text-xs text-slate-400" id="currentDate">Today</span>
+        </div>
+
+        <!-- Mood Slider -->
+        <div>
+          <div class="flex items-center justify-between mb-2">
+            <label class="text-xs font-medium text-slate-300">How is your energy right now? (1 - 10)</label>
+            <span class="text-sm font-bold text-emerald-400" id="moodValue">8 / 10</span>
+          </div>
+          <input type="range" id="moodRange" min="1" max="10" value="8" oninput="updateMood(this.value)" class="w-full accent-emerald-500 cursor-pointer">
+        </div>
+
+        <!-- Emotion Pills -->
+        <div>
+          <label class="block text-xs font-medium text-slate-300 mb-2">Emotions in Focus</label>
+          <div class="flex flex-wrap gap-2" id="emotionTags">
+            <span onclick="toggleTag(this)" class="cursor-pointer px-3 py-1 rounded-full text-xs font-medium bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Grateful</span>
+            <span onclick="toggleTag(this)" class="cursor-pointer px-3 py-1 rounded-full text-xs font-medium bg-slate-800 text-slate-300 border border-slate-700">Calm</span>
+            <span onclick="toggleTag(this)" class="cursor-pointer px-3 py-1 rounded-full text-xs font-medium bg-slate-800 text-slate-300 border border-slate-700">Focused</span>
+            <span onclick="toggleTag(this)" class="cursor-pointer px-3 py-1 rounded-full text-xs font-medium bg-slate-800 text-slate-300 border border-slate-700">Tired</span>
+            <span onclick="toggleTag(this)" class="cursor-pointer px-3 py-1 rounded-full text-xs font-medium bg-slate-800 text-slate-300 border border-slate-700">Anxious</span>
+          </div>
+        </div>
+
+        <!-- Encrypted Text Editor -->
+        <div>
+          <div class="flex items-center justify-between mb-1.5">
+            <label class="text-xs font-medium text-slate-300">Journal Entry (Encrypted with AES-256)</label>
+            <span class="text-[10px] text-slate-500"><i class="fa-solid fa-shield text-emerald-500 mr-1"></i> Private Column</span>
+          </div>
+          <textarea id="journalText" rows="6" placeholder="Write freely... text is encrypted before touching disk." class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3.5 text-sm text-slate-200 focus:outline-none focus:border-emerald-500"></textarea>
+        </div>
+
+        <button onclick="saveEntry()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-medium py-3 rounded-xl text-sm transition shadow-lg shadow-emerald-600/20 flex items-center justify-center space-x-2">
+          <i class="fa-solid fa-lock"></i>
+          <span>Encrypt & Save Entry</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Right Column: Trajectory Charts & Weekly Mirror (6 Cols) -->
+    <div class="lg:col-span-6 space-y-6">
+      <!-- Weekly AI Reflection Card -->
+      <div class="bg-slate-900/80 rounded-2xl border border-slate-800 p-6 shadow-xl space-y-3">
+        <h2 class="text-sm font-semibold uppercase tracking-wider text-slate-400 flex items-center">
+          <i class="fa-solid fa-sparkles text-amber-400 mr-2"></i> Weekly AI Gentle Mirror
+        </h2>
+        <div id="weeklySummary" class="p-4 bg-slate-950 rounded-xl border border-slate-800 text-sm text-slate-300 leading-relaxed">
+          Loading reflection...
+        </div>
+      </div>
+
+      <!-- Past Encrypted Entries -->
+      <div class="bg-slate-900/80 rounded-2xl border border-slate-800 p-6 shadow-xl space-y-3">
+        <h2 class="text-sm font-semibold uppercase tracking-wider text-slate-400">Recent Mindful Entries</h2>
+        <div id="entriesList" class="space-y-3 max-h-[300px] overflow-y-auto">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Emergency Helpline Modal -->
+  <div id="helplineModal" class="hidden fixed inset-0 bg-slate-950/80 backdrop-blur flex items-center justify-center p-4 z-50">
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-lg w-full p-6 space-y-4 shadow-2xl">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div class="flex items-center space-x-2 text-rose-400 font-bold">
+          <i class="fa-solid fa-heart-pulse"></i>
+          <span>Verified Crisis Support (24/7)</span>
+        </div>
+        <button onclick="closeHelplines()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <p class="text-xs text-slate-300">You don't have to carry this alone. Free, confidential support is available right now:</p>
+      <div class="space-y-3 text-xs" id="helplinesList">
+        <!-- Loaded via JS -->
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function updateMood(v) {
+      document.getElementById('moodValue').innerText = v + ' / 10';
+    }
+
+    function toggleTag(el) {
+      el.classList.toggle('bg-emerald-500/20');
+      el.classList.toggle('text-emerald-300');
+      el.classList.toggle('border-emerald-500/30');
+    }
+
+    function openHelplines() {
+      document.getElementById('helplineModal').classList.remove('hidden');
+    }
+
+    function closeHelplines() {
+      document.getElementById('helplineModal').classList.add('hidden');
+    }
+
+    async function loadData() {
+      try {
+        const res = await fetch('/api/v1/entries');
+        const entries = await res.json();
+        const list = document.getElementById('entriesList');
+        list.innerHTML = '';
+        entries.slice(0, 4).forEach(e => {
+          list.innerHTML += `
+            <div class="p-3.5 bg-slate-950 rounded-xl border border-slate-800/80 space-y-1">
+              <div class="flex justify-between items-center text-xs">
+                <span class="font-semibold text-emerald-400">${e.entry_date}</span>
+                <span class="text-slate-400">Mood: ${e.mood_score}/10</span>
+              </div>
+              <p class="text-xs text-slate-300 line-clamp-2">${e.decrypted_body}</p>
+            </div>
+          `;
+        });
+
+        const sumRes = await fetch('/api/v1/summary/weekly');
+        const sumData = await sumRes.json();
+        document.getElementById('weeklySummary').innerText = sumData.reflection;
+
+        const helpRes = await fetch('/api/v1/safety/helplines');
+        const helpData = await helpRes.json();
+        const hl = document.getElementById('helplinesList');
+        hl.innerHTML = helpData.helplines.map(h => `
+          <div class="p-3 bg-slate-950 rounded-xl border border-slate-800">
+            <p class="font-bold text-white">${h.name}</p>
+            <p class="text-emerald-400 font-mono text-sm mt-0.5"><a href="tel:${h.number}">${h.number}</a> (${h.hours})</p>
+            <p class="text-slate-400 text-[11px] mt-1">${h.description}</p>
+          </div>
+        `).join('');
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    async function saveEntry() {
+      const text = document.getElementById('journalText').value.trim();
+      if (!text) return;
+      const mood = parseInt(document.getElementById('moodRange').value);
+      const res = await fetch('/api/v1/entries', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          entry_date: new Date().toISOString().split('T')[0],
+          mood_score: mood,
+          emotion_tags: 'Grateful, Mindful',
+          journal_text: text
+        })
+      });
+      const data = await res.json();
+      if (data.safety_alert && data.safety_alert.distress_detected) {
+        openHelplines();
+      } else {
+        alert('Entry encrypted and saved successfully!');
+      }
+      document.getElementById('journalText').value = '';
+      loadData();
+    }
+
+    loadData();
+  </script>
+</body>
+</html>
