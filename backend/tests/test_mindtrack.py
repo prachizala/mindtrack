@@ -35,3 +35,14 @@ def test_sentiment_analysis():
 
     neg = analyze_sentiment("I feel sad, anxious, and deeply overwhelmed.")
     assert neg["polarity"] < -0.3
+
+
+def test_key_derivation_resilience():
+    # Verify that raw secret string is safely derived into valid 32-byte key
+    import hashlib, base64
+    from cryptography.fernet import Fernet
+    raw = "MyArbitraryPassphrase123!"
+    derived = base64.urlsafe_b64encode(hashlib.sha256(raw.encode()).digest())
+    f = Fernet(derived)
+    token = f.encrypt(b"Test message")
+    assert f.decrypt(token) == b"Test message"

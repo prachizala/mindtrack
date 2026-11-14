@@ -1,15 +1,17 @@
 import base64
+import hashlib
 from cryptography.fernet import Fernet
 from app.core.config import settings
 
 def get_fernet_cipher() -> Fernet:
+    key_str = settings.ENCRYPTION_MASTER_KEY
     try:
-        return Fernet(settings.ENCRYPTION_MASTER_KEY.encode("utf-8"))
+        # Try direct initialization if already a valid 32-byte urlsafe base64 key
+        return Fernet(key_str.encode("utf-8"))
     except Exception:
-        # Fallback to deterministic valid 32-byte base64 key
-        raw_key = b"MindTrackPrivacyMasterKey2026!!!"
-        b64_key = base64.urlsafe_b64encode(raw_key)
-        return Fernet(b64_key)
+        # Robust derivation: sha256 hash of secret key -> base64
+        derived = base64.urlsafe_b64encode(hashlib.sha256(key_str.encode("utf-8")).digest())
+        return Fernet(derived)
 
 cipher = get_fernet_cipher()
 
