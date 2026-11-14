@@ -20,7 +20,7 @@ if not user:
     db.refresh(user)
 
     entries_data = [
-        ("2026-11-05", 8, "Grateful, Focused, Energized", "Started the 7-day multi-agent sprint today. Felt organized and motivated by the architecture plan.", 0.60, False),
+        ("2026-11-05", 8, "Grateful, Focused, Energized", "Started the 7-day full-stack development sprint today. Felt organized and motivated by the architecture plan.", 0.60, False),
         ("2026-11-07", 7, "Calm, Productive", "Completed the database schemas and auth tokens. Everything tested cleanly.", 0.40, False),
         ("2026-11-09", 5, "Tired, Stressed", "Felt overwhelmed by concurrent project tests, but took a walk and refocused.", -0.20, False),
         ("2026-11-11", 8, "Accomplished, Hopeful", "Landed the core RAG and face recognition biometrics. Momentum is high.", 0.70, False),
