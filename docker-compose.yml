@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  mindtrack:
+    build: .
+    container_name: mindtrack
+    ports:
+      - "8002:8000"
+    environment:
+      - SECRET_KEY=mindtrack-production-jwt-key-32-chars
+    volumes:
+      - ./backend/mindtrack.db:/app/mindtrack.db
+    restart: unless-stopped
