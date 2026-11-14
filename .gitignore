@@ -1,0 +1,36 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Node & Frontend
+node_modules/
+dist/
+.vite/
+*.local
+
+# Environment & Cryptographic Keys
+.env
+.env.local
+*.pem
+*.key
+*.secret
+
+# Database (Encrypted and raw DB files)
+*.db
+*.sqlite
+*.sqlite3
+
+# IDEs & System
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
