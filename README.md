@@ -4,7 +4,7 @@ MindTrack is an emotionally restorative, confidential wellness journaling platfo
 
 ---
 
-## 🌟 Key Features
+## Key Features
 
 1. **Zero-Knowledge Field Encryption**:
    - Journal text is encrypted using Fernet (AES-256 equivalent) prior to database persistence. Server logs and databases never contain unencrypted journal text.
@@ -19,7 +19,7 @@ MindTrack is an emotionally restorative, confidential wellness journaling platfo
 
 ---
 
-## 🚀 Quickstart Guide
+## Quickstart Guide
 
 ```bash
 cd backend
@@ -31,5 +31,5 @@ Open `http://localhost:8000` to interact with MindTrack.
 
 ---
 
-## 👤 Author
+## Author
 **Prachi Zala** | [GitHub](https://github.com/prachizala)
