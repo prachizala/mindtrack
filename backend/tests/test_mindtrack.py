@@ -61,3 +61,20 @@ def test_p2_empty_entries_and_error_handling():
     help_res = client.get("/api/v1/safety/helplines")
     assert help_res.status_code == 200
     assert len(help_res.json()["helplines"]) >= 2
+
+
+def test_crisis_sentinel_variations():
+    # Distress variations
+    p1 = evaluate_distress_signals("I keep having thoughts of self harm.", polarity=-0.6)
+    assert p1["distress_detected"] is True
+
+    p2 = evaluate_distress_signals("Feeling really low and thinking about ending it all.", polarity=-0.9)
+    assert p2["distress_detected"] is True
+
+    # Neutral sentence with benign word
+    benign = evaluate_distress_signals("Let's bring this meeting to an end and have lunch.", polarity=0.1)
+    assert benign["distress_detected"] is False
+
+def test_sentiment_polarity_neutral():
+    res = analyze_sentiment("Today was an ordinary Tuesday. I attended classes and went to the library.")
+    assert -0.2 <= res["polarity"] <= 0.2
