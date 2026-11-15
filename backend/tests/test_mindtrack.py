@@ -46,3 +46,18 @@ def test_key_derivation_resilience():
     f = Fernet(derived)
     token = f.encrypt(b"Test message")
     assert f.decrypt(token) == b"Test message"
+
+
+def test_p2_empty_entries_and_error_handling():
+    from fastapi.testclient import TestClient
+    from app.main import app
+    client = TestClient(app)
+
+    # Empty payload validation error or auth rejection
+    bad_res = client.post("/api/v1/entries", json={})
+    assert bad_res.status_code in [401, 422]
+
+    # Helplines endpoint returns verified list
+    help_res = client.get("/api/v1/safety/helplines")
+    assert help_res.status_code == 200
+    assert len(help_res.json()["helplines"]) >= 2

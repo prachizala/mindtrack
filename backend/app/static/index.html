@@ -10,50 +10,71 @@
     body { background-color: #0f172a; color: #f8fafc; font-family: system-ui, -apple-system, sans-serif; }
   </style>
 </head>
-<body class="min-h-screen flex flex-col">
+<body class="min-h-screen flex flex-col bg-slate-950 text-slate-100">
   <!-- MANDATORY NON-MEDICAL DISCLAIMER TOP BANNER -->
-  <aside class="bg-amber-500/10 border-b border-amber-500/20 px-6 py-2.5 text-center text-xs text-amber-300 flex items-center justify-center space-x-2">
+  <aside class="bg-amber-500/10 border-b border-amber-500/20 px-4 sm:px-6 py-2.5 text-center text-xs text-amber-300 flex flex-wrap items-center justify-center gap-1.5">
     <i class="fa-solid fa-triangle-exclamation"></i>
-    <span><b>Notice:</b> MindTrack is a self-reflection wellness tool, not medical advice or healthcare. If in crisis, call Tele-MANAS (14416) or 988.</span>
-    <button onclick="openHelplines()" class="underline font-semibold ml-2 hover:text-amber-200">View Helplines</button>
+    <span><b>Notice:</b> MindTrack is a self-reflection wellness tool, not medical advice or clinical care. If in distress, call Tele-MANAS (14416) or 988.</span>
+    <button onclick="openHelplines()" class="underline font-semibold hover:text-amber-200 ml-1">View 24/7 Helplines</button>
   </aside>
 
-  <!-- Header -->
-  <header class="bg-slate-900 border-b border-slate-800 px-6 py-4 flex items-center justify-between">
+  <!-- Top Navigation -->
+  <header class="bg-slate-900 border-b border-slate-800 px-4 sm:px-6 py-3.5 flex items-center justify-between sticky top-0 z-20">
     <div class="flex items-center space-x-3">
-      <div class="w-10 h-10 rounded-xl bg-emerald-600 flex items-center justify-center text-white text-xl font-bold shadow-lg shadow-emerald-500/20">
+      <div class="w-9 h-9 rounded-xl bg-emerald-600 flex items-center justify-center text-white text-lg font-bold shadow-lg shadow-emerald-500/20">
         <i class="fa-solid fa-leaf"></i>
       </div>
       <div>
-        <h1 class="font-bold text-lg leading-tight tracking-tight">MindTrack</h1>
-        <p class="text-xs text-slate-400">Privacy-First Mental Wellness Journal</p>
+        <h1 class="font-bold text-base sm:text-lg leading-tight tracking-tight flex items-center gap-2">
+          MindTrack
+          <span class="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">v0.9.1</span>
+        </h1>
+        <p class="text-xs text-slate-400">Privacy-First Mental Wellness & Sentinel Reflection</p>
       </div>
     </div>
-    <div class="flex items-center space-x-4">
-      <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+    <div class="flex items-center space-x-2 sm:space-x-3">
+      <span class="hidden sm:inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
         <i class="fa-solid fa-lock mr-1.5"></i> AES-256 Encrypted
       </span>
-      <button onclick="openHelplines()" class="text-xs bg-rose-500/10 hover:bg-rose-500/20 text-rose-300 px-3 py-1.5 rounded-lg border border-rose-500/30 transition">
-        <i class="fa-solid fa-phone-volume mr-1"></i> Emergency Help
+      <button onclick="openHelplines()" class="text-xs bg-rose-500/10 hover:bg-rose-500/20 text-rose-300 px-3 py-1.5 rounded-lg border border-rose-500/30 transition flex items-center gap-1.5">
+        <i class="fa-solid fa-phone-volume"></i>
+        <span>Helplines</span>
       </button>
     </div>
   </header>
 
+  <!-- Toast Notification System -->
+  <div id="toastNotification" class="hidden fixed top-16 right-4 z-50 bg-slate-900 border border-emerald-500/40 text-emerald-300 px-4 py-3 rounded-xl shadow-2xl flex items-center gap-2.5 text-xs transition-all">
+    <i class="fa-solid fa-circle-check text-emerald-400"></i>
+    <span id="toastMsg">Entry encrypted & saved successfully!</span>
+  </div>
+
+  <!-- Global Error Alert -->
+  <div id="errorAlert" class="hidden max-w-7xl w-full mx-auto px-4 sm:px-6 pt-4">
+    <div class="bg-rose-500/10 border border-rose-500/30 rounded-xl p-3.5 flex items-center justify-between gap-3 text-rose-400 text-xs sm:text-sm">
+      <div class="flex items-center gap-2">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+        <span id="errorMsg">Failed to process wellness request.</span>
+      </div>
+      <button onclick="dismissError()" class="underline text-xs hover:text-rose-200">Dismiss</button>
+    </div>
+  </div>
+
   <!-- Main Container -->
-  <main class="flex-1 max-w-7xl w-full mx-auto p-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
+  <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
     <!-- Left Column: Daily Check-in Form (6 Cols) -->
     <div class="lg:col-span-6 space-y-6">
-      <div class="bg-slate-900/80 rounded-2xl border border-slate-800 p-6 shadow-xl space-y-5">
+      <div class="bg-slate-900/90 rounded-2xl border border-slate-800 p-5 sm:p-6 shadow-xl space-y-5">
         <div class="flex items-center justify-between border-b border-slate-800 pb-3">
-          <h2 class="text-sm font-semibold uppercase tracking-wider text-slate-300">Daily Reflection</h2>
-          <span class="text-xs text-slate-400" id="currentDate">Today</span>
+          <h2 class="text-xs sm:text-sm font-semibold uppercase tracking-wider text-slate-300">Daily Mindful Reflection</h2>
+          <span class="text-xs text-slate-400 font-mono" id="currentDate">Today</span>
         </div>
 
         <!-- Mood Slider -->
         <div>
-          <div class="flex items-center justify-between mb-2">
-            <label class="text-xs font-medium text-slate-300">How is your energy right now? (1 - 10)</label>
-            <span class="text-sm font-bold text-emerald-400" id="moodValue">8 / 10</span>
+          <div class="flex items-center justify-between mb-2 text-xs">
+            <label class="font-medium text-slate-300">How is your energy right now? (1 - 10)</label>
+            <span class="font-bold text-emerald-400 font-mono text-sm" id="moodValue">8 / 10</span>
           </div>
           <input type="range" id="moodRange" min="1" max="10" value="8" oninput="updateMood(this.value)" class="w-full accent-emerald-500 cursor-pointer">
         </div>
@@ -72,36 +93,39 @@
 
         <!-- Encrypted Text Editor -->
         <div>
-          <div class="flex items-center justify-between mb-1.5">
-            <label class="text-xs font-medium text-slate-300">Journal Entry (Encrypted with AES-256)</label>
-            <span class="text-[10px] text-slate-500"><i class="fa-solid fa-shield text-emerald-500 mr-1"></i> Private Column</span>
+          <div class="flex items-center justify-between mb-1.5 text-xs">
+            <label class="font-medium text-slate-300">Journal Entry (Encrypted with AES-256)</label>
+            <span class="text-[10px] text-slate-400"><i class="fa-solid fa-shield text-emerald-500 mr-1"></i> Field-Level Encrypted</span>
           </div>
-          <textarea id="journalText" rows="6" placeholder="Write freely... text is encrypted before touching disk." class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3.5 text-sm text-slate-200 focus:outline-none focus:border-emerald-500"></textarea>
+          <textarea id="journalText" rows="6" placeholder="Write freely... text is converted into ciphertext before touching the database." class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3.5 text-xs sm:text-sm text-slate-200 focus:outline-none focus:border-emerald-500 placeholder-slate-500"></textarea>
         </div>
 
-        <button onclick="saveEntry()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-medium py-3 rounded-xl text-sm transition shadow-lg shadow-emerald-600/20 flex items-center justify-center space-x-2">
-          <i class="fa-solid fa-lock"></i>
-          <span>Encrypt & Save Entry</span>
+        <button id="saveBtn" onclick="saveEntry()" class="w-full bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-white font-medium py-3 rounded-xl text-xs sm:text-sm transition shadow-lg shadow-emerald-600/20 flex items-center justify-center space-x-2">
+          <i class="fa-solid fa-lock" id="btnIcon"></i>
+          <span id="btnText">Encrypt & Save Entry</span>
         </button>
       </div>
     </div>
 
-    <!-- Right Column: Trajectory Charts & Weekly Mirror (6 Cols) -->
+    <!-- Right Column: Trajectory & Past Entries (6 Cols) -->
     <div class="lg:col-span-6 space-y-6">
       <!-- Weekly AI Reflection Card -->
-      <div class="bg-slate-900/80 rounded-2xl border border-slate-800 p-6 shadow-xl space-y-3">
-        <h2 class="text-sm font-semibold uppercase tracking-wider text-slate-400 flex items-center">
+      <div class="bg-slate-900/90 rounded-2xl border border-slate-800 p-5 sm:p-6 shadow-xl space-y-3">
+        <h2 class="text-xs sm:text-sm font-semibold uppercase tracking-wider text-slate-400 flex items-center">
           <i class="fa-solid fa-sparkles text-amber-400 mr-2"></i> Weekly AI Gentle Mirror
         </h2>
-        <div id="weeklySummary" class="p-4 bg-slate-950 rounded-xl border border-slate-800 text-sm text-slate-300 leading-relaxed">
-          Loading reflection...
+        <div id="weeklySummary" class="p-4 bg-slate-950 rounded-xl border border-slate-800 text-xs sm:text-sm text-slate-300 leading-relaxed min-h-[70px] flex items-center">
+          <span class="text-slate-400 text-xs"><i class="fa-solid fa-circle-notch fa-spin mr-1.5 text-emerald-400"></i> Synthesizing gentle weekly trajectory...</span>
         </div>
       </div>
 
       <!-- Past Encrypted Entries -->
-      <div class="bg-slate-900/80 rounded-2xl border border-slate-800 p-6 shadow-xl space-y-3">
-        <h2 class="text-sm font-semibold uppercase tracking-wider text-slate-400">Recent Mindful Entries</h2>
-        <div id="entriesList" class="space-y-3 max-h-[300px] overflow-y-auto">
+      <div class="bg-slate-900/90 rounded-2xl border border-slate-800 p-5 sm:p-6 shadow-xl space-y-3">
+        <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+          <h2 class="text-xs sm:text-sm font-semibold uppercase tracking-wider text-slate-400">Recent Reflections</h2>
+          <span class="text-[11px] text-slate-400">Decrypted in memory</span>
+        </div>
+        <div id="entriesList" class="space-y-3 max-h-[340px] overflow-y-auto">
           <!-- Populated by JS -->
         </div>
       </div>
@@ -110,22 +134,36 @@
 
   <!-- Emergency Helpline Modal -->
   <div id="helplineModal" class="hidden fixed inset-0 bg-slate-950/80 backdrop-blur flex items-center justify-center p-4 z-50">
-    <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-lg w-full p-6 space-y-4 shadow-2xl">
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-lg w-full p-5 sm:p-6 space-y-4 shadow-2xl">
       <div class="flex items-center justify-between border-b border-slate-800 pb-3">
-        <div class="flex items-center space-x-2 text-rose-400 font-bold">
+        <div class="flex items-center space-x-2 text-rose-400 font-bold text-sm sm:text-base">
           <i class="fa-solid fa-heart-pulse"></i>
-          <span>Verified Crisis Support (24/7)</span>
+          <span>Verified Crisis Support (24/7 Free)</span>
         </div>
         <button onclick="closeHelplines()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
       </div>
-      <p class="text-xs text-slate-300">You don't have to carry this alone. Free, confidential support is available right now:</p>
+      <p class="text-xs text-slate-300 leading-relaxed">
+        You don't have to carry this alone. If you are experiencing distress, certified professional support is available right now:
+      </p>
       <div class="space-y-3 text-xs" id="helplinesList">
         <!-- Loaded via JS -->
+      </div>
+      <div class="pt-2 text-center">
+        <button onclick="closeHelplines()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs rounded-xl">
+          Return to Journal
+        </button>
       </div>
     </div>
   </div>
 
+  <!-- Footer -->
+  <footer class="border-t border-slate-900 bg-slate-950 px-4 sm:px-6 py-3.5 text-center text-xs text-slate-400">
+    MindTrack • Built by Prachi Zala • AES-256 Fernet, Sentiment Scoring & FastAPI
+  </footer>
+
   <script>
+    document.getElementById('currentDate').innerText = new Date().toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
+
     function updateMood(v) {
       document.getElementById('moodValue').innerText = v + ' / 10';
     }
@@ -134,6 +172,22 @@
       el.classList.toggle('bg-emerald-500/20');
       el.classList.toggle('text-emerald-300');
       el.classList.toggle('border-emerald-500/30');
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toastNotification');
+      document.getElementById('toastMsg').innerText = msg;
+      toast.classList.remove('hidden');
+      setTimeout(() => toast.classList.add('hidden'), 3500);
+    }
+
+    function showError(msg) {
+      document.getElementById('errorMsg').innerText = msg;
+      document.getElementById('errorAlert').classList.remove('hidden');
+    }
+
+    function dismissError() {
+      document.getElementById('errorAlert').classList.add('hidden');
     }
 
     function openHelplines() {
@@ -147,62 +201,100 @@
     async function loadData() {
       try {
         const res = await fetch('/api/v1/entries');
+        if (!res.ok) throw new Error('HTTP ' + res.status);
         const entries = await res.json();
         const list = document.getElementById('entriesList');
         list.innerHTML = '';
-        entries.slice(0, 4).forEach(e => {
-          list.innerHTML += `
-            <div class="p-3.5 bg-slate-950 rounded-xl border border-slate-800/80 space-y-1">
-              <div class="flex justify-between items-center text-xs">
-                <span class="font-semibold text-emerald-400">${e.entry_date}</span>
-                <span class="text-slate-400">Mood: ${e.mood_score}/10</span>
-              </div>
-              <p class="text-xs text-slate-300 line-clamp-2">${e.decrypted_body}</p>
+        
+        if (!entries || entries.length === 0) {
+          list.innerHTML = `
+            <div class="p-8 border border-dashed border-slate-800 rounded-xl text-center text-xs text-slate-400">
+              <i class="fa-solid fa-feather-pointed text-xl text-slate-500 mb-2"></i>
+              <p>No reflections logged yet. Write your thoughts on the left to begin.</p>
             </div>
           `;
-        });
+        } else {
+          entries.slice(0, 5).forEach(e => {
+            list.innerHTML += `
+              <div class="p-3.5 bg-slate-950 rounded-xl border border-slate-800/80 space-y-1 hover:border-slate-700 transition">
+                <div class="flex justify-between items-center text-xs">
+                  <span class="font-semibold text-emerald-400 font-mono">${e.entry_date}</span>
+                  <span class="text-slate-400 font-mono">Energy: ${e.mood_score}/10</span>
+                </div>
+                <p class="text-xs text-slate-300 line-clamp-2 leading-relaxed">${e.decrypted_body}</p>
+              </div>
+            `;
+          });
+        }
 
         const sumRes = await fetch('/api/v1/summary/weekly');
-        const sumData = await sumRes.json();
-        document.getElementById('weeklySummary').innerText = sumData.reflection;
+        if (sumRes.ok) {
+          const sumData = await sumRes.json();
+          document.getElementById('weeklySummary').innerText = sumData.reflection || 'Take a moment to breathe and reflect on today.';
+        }
 
         const helpRes = await fetch('/api/v1/safety/helplines');
-        const helpData = await helpRes.json();
-        const hl = document.getElementById('helplinesList');
-        hl.innerHTML = helpData.helplines.map(h => `
-          <div class="p-3 bg-slate-950 rounded-xl border border-slate-800">
-            <p class="font-bold text-white">${h.name}</p>
-            <p class="text-emerald-400 font-mono text-sm mt-0.5"><a href="tel:${h.number}">${h.number}</a> (${h.hours})</p>
-            <p class="text-slate-400 text-[11px] mt-1">${h.description}</p>
-          </div>
-        `).join('');
+        if (helpRes.ok) {
+          const helpData = await helpRes.json();
+          const hl = document.getElementById('helplinesList');
+          hl.innerHTML = helpData.helplines.map(h => `
+            <div class="p-3 bg-slate-950 rounded-xl border border-slate-800 space-y-0.5">
+              <p class="font-bold text-white text-xs">${h.name}</p>
+              <p class="text-emerald-400 font-mono text-xs"><a href="tel:${h.number}" class="hover:underline">${h.number}</a> (${h.hours})</p>
+              <p class="text-slate-400 text-[11px]">${h.description}</p>
+            </div>
+          `).join('');
+        }
       } catch (err) {
-        console.error(err);
+        showError('Unable to synchronize journal database. Please verify backend status.');
       }
     }
 
     async function saveEntry() {
       const text = document.getElementById('journalText').value.trim();
-      if (!text) return;
-      const mood = parseInt(document.getElementById('moodRange').value);
-      const res = await fetch('/api/v1/entries', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          entry_date: new Date().toISOString().split('T')[0],
-          mood_score: mood,
-          emotion_tags: 'Grateful, Mindful',
-          journal_text: text
-        })
-      });
-      const data = await res.json();
-      if (data.safety_alert && data.safety_alert.distress_detected) {
-        openHelplines();
-      } else {
-        alert('Entry encrypted and saved successfully!');
+      if (!text) {
+        showError('Please write a reflection before saving.');
+        return;
       }
-      document.getElementById('journalText').value = '';
-      loadData();
+
+      const saveBtn = document.getElementById('saveBtn');
+      const btnText = document.getElementById('btnText');
+      const btnIcon = document.getElementById('btnIcon');
+      
+      saveBtn.disabled = true;
+      btnIcon.className = 'fa-solid fa-circle-notch fa-spin';
+      btnText.innerText = 'Encrypting with AES-256...';
+
+      const mood = parseInt(document.getElementById('moodRange').value);
+      try {
+        const res = await fetch('/api/v1/entries', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            entry_date: new Date().toISOString().split('T')[0],
+            mood_score: mood,
+            emotion_tags: 'Grateful, Mindful',
+            journal_text: text
+          })
+        });
+
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        const data = await res.json();
+        
+        if (data.safety_alert && data.safety_alert.distress_detected) {
+          openHelplines();
+        } else {
+          showToast('Entry encrypted with AES-256 and saved safely!');
+        }
+        document.getElementById('journalText').value = '';
+        loadData();
+      } catch (err) {
+        showError('Failed to save encrypted entry. Check backend connection.');
+      } finally {
+        saveBtn.disabled = false;
+        btnIcon.className = 'fa-solid fa-lock';
+        btnText.innerText = 'Encrypt & Save Entry';
+      }
     }
 
     loadData();
