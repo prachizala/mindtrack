@@ -1,6 +1,6 @@
 # MindTrack: Privacy-First Mental Wellness Journal (API Prototype)
 
-> **Note:** This backend prototype has been integrated and superseded by our full-stack Streamlit NLP suite [MindPulse: Mood Tracker & Sentiment Analysis](https://github.com/prachizala/mood-tracker-sentiment-analysis). Kept here as an API reference.
+> **Note:** This backend prototype has been integrated and superseded by our full-stack Streamlit NLP suite [mood-tracker-sentiment-analysis](https://github.com/prachizala/mood-tracker-sentiment-analysis). Kept here as an API reference.
 
 [![MindTrack CI](https://github.com/prachizala/mindtrack/actions/workflows/ci.yml/badge.svg)](https://github.com/prachizala/mindtrack/actions/workflows/ci.yml)
 [![Python Version](https://img.shields.io/badge/python-3.11%2B-blue.svg)](https://www.python.org/)
@@ -81,7 +81,7 @@ pytest backend/tests/test_mindtrack.py -v
 
 ## Repository Status & Flagship Supersession
 This repository is retained as an architectural API prototype. For the actively maintained full-stack data analytics and sentiment analysis suite featuring Streamlit, HuggingFace Transformers, and longitudinal visualization, please see:
-👉 **[MindPulse: Mood Tracker & Sentiment Analysis](https://github.com/prachizala/mood-tracker-sentiment-analysis)**
+👉 **[mood-tracker-sentiment-analysis](https://github.com/prachizala/mood-tracker-sentiment-analysis)**
 
 ---
 
